@@ -2060,3 +2060,167 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
   color: #fff;
   transform: translateY(-1px);
 }
+
+/* 志愿卡片统一格式 */
+.volunteer-card .card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+.volunteer-card .card-tag {
+  font-size: 12px;
+  padding: 3px 10px;
+  border-radius: 12px;
+  font-weight: 500;
+}
+.volunteer-card .card-status {
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: #16a34a;
+}
+.volunteer-card .status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #16a34a;
+  animation: pulse 2s infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+.volunteer-card .card-meta {
+  display: flex;
+  gap: 16px;
+  margin: 10px 0;
+  flex-wrap: wrap;
+}
+.volunteer-card .meta-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 13px;
+  color: var(--c-text-muted);
+}
+.volunteer-card .meta-item svg {
+  flex-shrink: 0;
+}
+
+/* 官网链接提示文字 */
+.card-link-hint {
+  font-size: 12px;
+  color: #64748b;
+  margin: 8px 0 4px;
+  padding: 6px 10px;
+  background: #f1f5f9;
+  border-radius: 6px;
+  border-left: 3px solid #407bff;
+}
+
+/* 暂无报名链接（灰色禁用样式） */
+.card-link-disabled {
+  color: #94a3b8;
+  cursor: not-allowed;
+  text-decoration: none;
+}
+.card-link-disabled:hover {
+  color: #94a3b8;
+}
+
+/* ========== AI回答排版样式 ========== */
+.message-bot .message-bubble {
+  line-height: 1.7;
+}
+.answer-content {
+  font-size: 14px;
+  color: #1e293b;
+}
+.answer-intro {
+  margin: 0 0 12px 0;
+  font-size: 14px;
+}
+.answer-intro strong {
+  color: #2563eb;
+  font-weight: 600;
+}
+.answer-section {
+  margin: 10px 0;
+  padding: 8px 12px;
+  background: #f8fafc;
+  border-radius: 8px;
+  border-left: 3px solid #3b82f6;
+}
+.answer-title {
+  margin: 0 0 8px 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: #1e40af;
+}
+.answer-entity-title {
+  font-size: 16px;
+  color: #1e3a8a;
+  margin-bottom: 8px;
+  padding-bottom: 6px;
+  border-bottom: 2px solid #dbeafe;
+}
+.answer-desc {
+  margin: 0 0 10px 0;
+  color: #475569;
+  font-size: 13px;
+}
+.answer-list {
+  margin: 0;
+  padding-left: 20px;
+}
+.answer-list li {
+  margin: 4px 0;
+  font-size: 13px;
+  color: #334155;
+  line-height: 1.6;
+}
+.answer-list li::marker {
+  color: #3b82f6;
+}
+.answer-link {
+  color: #2563eb;
+  text-decoration: none;
+  font-weight: 500;
+  border-bottom: 1px dashed #93c5fd;
+  transition: all 0.2s;
+}
+.answer-link:hover {
+  color: #1d4ed8;
+  border-bottom-style: solid;
+  background: #eff6ff;
+}
+.answer-link-box {
+  margin: 4px 0;
+  padding: 8px 12px;
+  background: #eff6ff;
+  border-radius: 6px;
+  word-break: break-all;
+}
+.answer-footer {
+  margin: 12px 0 0 0;
+  padding: 8px 12px;
+  background: #f0fdf4;
+  border-radius: 6px;
+  font-size: 12px;
+  color: #166534;
+  border-left: 3px solid #22c55e;
+}
+.answer-empty {
+  text-align: center;
+}
+.answer-empty-text {
+  font-size: 15px;
+  color: #64748b;
+  margin: 8px 0 12px 0;
+  padding: 12px;
+  background: #fef3c7;
+  border-radius: 8px;
+  border-left: 3px solid #f59e0b;
+}

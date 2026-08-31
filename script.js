@@ -44,6 +44,33 @@
   };
   var CATEGORY_LABEL = { 'academic': '学科类', 'innovation': '创新类', 'comprehensive': '综合类' };
 
+  // 志愿分类映射（根据名称关键词判断）
+  var VOLUNTEER_CATEGORY_MAP = {
+    '科普讲解': ['科技馆', '博物馆', '科普馆', '讲解', '科普', '航天', '海洋', '自然', '天文'],
+    '赛事服务': ['职业技能大赛', '竞赛', '赛事', '比赛', '大赛'],
+    '社区服务': ['社区', '花园', '街道', '居委会'],
+    '科技实践': ['无人机', '3D打印', '机器人', '机械', '新能源', '磁悬浮', '光影', 'DIY']
+  };
+  var VOLUNTEER_CATEGORY_LABEL = { '科普讲解': '科普讲解', '赛事服务': '赛事服务', '社区服务': '社区服务', '科技实践': '科技实践', '其他': '志愿服务' };
+
+  // 判断志愿分类
+  function getVolunteerCategory(name) {
+    for (var cat in VOLUNTEER_CATEGORY_MAP) {
+      var keywords = VOLUNTEER_CATEGORY_MAP[cat];
+      for (var i = 0; i < keywords.length; i++) {
+        if (name.indexOf(keywords[i]) !== -1) return cat;
+      }
+    }
+    return '其他';
+  }
+
+  // 截断描述，统一长度
+  function truncateDesc(text, maxLen) {
+    if (!text) return '';
+    if (text.length <= maxLen) return text;
+    return text.slice(0, maxLen) + '...';
+  }
+
   // 渲染比赛卡片
   function renderCompetitionCards() {
     var grid = document.getElementById('competitionGrid');
@@ -79,14 +106,22 @@
     var html = '';
     PORTAL.volunteers.forEach(function (v, idx) {
       var link = v.link || '#';
-      html += '<div class="card volunteer-card" data-id="vol_' + idx + '" data-detail="vol_' + idx + '">' +
-        '<div class="volunteer-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>' +
+      var cat = getVolunteerCategory(v.name);
+      var shortDesc = truncateDesc(v.description, 90);
+      html += '<div class="card volunteer-card" data-category="' + cat + '" data-id="vol_' + idx + '" data-detail="vol_' + idx + '">' +
+        '<div class="card-top">' +
+        '<span class="card-tag tag-academic">' + (VOLUNTEER_CATEGORY_LABEL[cat] || '志愿服务') + '</span>' +
+        '<span class="card-status status-open"><span class="status-dot"></span>招募中</span>' +
+        '</div>' +
         '<h3 class="card-title">' + v.name + '</h3>' +
-        '<p class="card-text">' + v.description + '</p>' +
-        '<div class="volunteer-info"><div class="info-pill"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 2L2 7l10 5 10-5-10-5z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg><span>官方志愿项目</span></div></div>' +
+        '<p class="card-text">' + shortDesc + '</p>' +
+        '<div class="card-meta">' +
+        '<div class="meta-item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 22s8-7.5 8-13a8 8 0 10-16 0c0 5.5 8 13 8 13z" stroke="currentColor" stroke-width="1.6"/><circle cx="12" cy="9" r="2.5" stroke="currentColor" stroke-width="1.6"/></svg><span>天津</span></div>' +
+        '<div class="meta-item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" stroke="currentColor" stroke-width="1.6"/><circle cx="12" cy="7" r="4" stroke="currentColor" stroke-width="1.6"/></svg><span>机械类</span></div>' +
+        '</div>' +
         '<div class="card-actions">' +
         '<span class="card-link view-detail">查看详情</span>' +
-        (link !== '#' ? '<a href="' + link + '" class="card-link card-link-ext" target="_blank" rel="noopener noreferrer">前往报名</a>' : '') +
+        (link !== '#' ? '<a href="' + link + '" class="card-link card-link-ext" target="_blank" rel="noopener noreferrer">前往报名</a>' : '<span class="card-link card-link-disabled">暂无报名链接</span>') +
         '</div>' +
         '</div>';
     });
@@ -142,7 +177,8 @@
         sections: [
           { title: '项目介绍', icon: 'target', type: 'list', items: [v.description] },
           { title: '适合对象', icon: 'team', type: 'list', items: grades.length ? grades.map(function (g) { return g + '（' + (entityByName(g) ? entityByName(g).description : '') + '）'; }) : ['面向机械类专业各年级学生'] },
-          { title: '能力要求', icon: 'target', type: 'list', items: needs.length ? needs : ['以项目方要求为准'] }
+          { title: '能力要求', icon: 'target', type: 'list', items: needs.length ? needs : ['以项目方要求为准'] },
+          { title: '温馨提示', icon: 'target', type: 'list', items: [v.link ? '详细内容请点击下方"访问官方网站"按钮查看最新信息' : '暂无官方链接，具体信息请以项目方发布为准'] }
         ]
       };
     });
@@ -340,7 +376,20 @@
   }
   function findAnswer(question) {
     var q = question.toLowerCase();
-    // 1) 年级推荐类："大一机械/大一新生/大二学生 适合什么 比赛/志愿/推荐"
+
+    // 转义HTML特殊字符的工具函数
+    function escapeHtml(str) {
+      if (!str) return '';
+      return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+
+    // 生成可点击链接
+    function linkHtml(name, url) {
+      if (!url) return escapeHtml(name);
+      return '<a href="' + escapeHtml(url) + '" target="_blank" rel="noopener noreferrer" class="answer-link">' + escapeHtml(name) + ' ↗</a>';
+    }
+
+    // 1) 年级推荐类
     var gradeMatch = q.match(/(大一|大二|大三|大四)(?:\s*机械|\s*新生|\s*学生|\s*年级|)/);
     if (gradeMatch && /适合|推荐|建议|参加|竞赛|比赛|志愿|活动/.test(q)) {
       var grade = gradeMatch[1] + '机械';
@@ -351,66 +400,102 @@
         else if (PORTAL.volunteers.some(function (v) { return v.name === name; })) vols.push(name);
       });
       var needs = relNeed[grade] || [];
-      var lines = ['根据知识图谱数据，' + grade + '同学适合以下项目：'];
+
+      var html = '<div class="answer-content">';
+      html += '<p class="answer-intro">根据知识图谱数据，<strong>' + escapeHtml(grade) + '</strong>同学适合以下项目：</p>';
+
       if (comps.length) {
-        lines.push('');
-        lines.push('【适合的比赛】');
+        html += '<div class="answer-section">';
+        html += '<h4 class="answer-title">🏆 适合的比赛</h4>';
+        html += '<ul class="answer-list">';
         comps.forEach(function (c) {
-          var link = kgLink(c);
-          lines.push('· ' + c + (link ? ' （' + link + '）' : ''));
+          html += '<li>' + linkHtml(c, kgLink(c)) + '</li>';
         });
+        html += '</ul></div>';
       }
+
       if (vols.length) {
-        lines.push('');
-        lines.push('【适合的志愿】');
+        html += '<div class="answer-section">';
+        html += '<h4 class="answer-title">💙 适合的志愿</h4>';
+        html += '<ul class="answer-list">';
         vols.forEach(function (v) {
-          var link = kgLink(v);
-          lines.push('· ' + v + (link ? ' （' + link + '）' : ''));
+          html += '<li>' + linkHtml(v, kgLink(v)) + '</li>';
         });
+        html += '</ul></div>';
       }
+
       if (needs.length) {
-        lines.push('');
-        lines.push('【建议掌握的技能】');
-        needs.forEach(function (n) { lines.push('· ' + n); });
+        html += '<div class="answer-section">';
+        html += '<h4 class="answer-title">📚 建议掌握的技能</h4>';
+        html += '<ul class="answer-list">';
+        needs.forEach(function (n) {
+          html += '<li>' + escapeHtml(n) + '</li>';
+        });
+        html += '</ul></div>';
       }
-      lines.push('');
-      lines.push('（以上信息均来自知识图谱官方数据，可点击卡片查看详情）');
-      return lines.join('\n');
+
+      html += '<p class="answer-footer">💡 以上信息均来自知识图谱官方数据，可点击上方链接查看官网详情</p>';
+      html += '</div>';
+      return html;
     }
-    // 2) 实体详情类："X 是什么/介绍/需要什么技能"
+
+    // 2) 实体详情类
     var ent = kgFindEntity(question);
     if (ent) {
       var suited = relSuitable[ent.name] || [];
       var needs = relNeed[ent.name] || [];
-      var lines = [];
-      lines.push('【' + ent.name + '】');
-      lines.push(ent.description || '暂无简介');
-      if (suited.length) {
-        lines.push('');
-        lines.push('【适合对象】');
-        suited.forEach(function (s) {
-          var link = kgLink(s);
-          lines.push('· ' + s + (link ? ' （' + link + '）' : ''));
-        });
-      }
-      if (needs.length) {
-        lines.push('');
-        lines.push('【需要的能力/技能】');
-        needs.forEach(function (n) { lines.push('· ' + n); });
-      }
       var link = ent.link || kgLink(ent.name);
-      if (link) {
-        lines.push('');
-        lines.push('【官方链接】' + link);
+
+      var html = '<div class="answer-content">';
+      html += '<h4 class="answer-title answer-entity-title">' + escapeHtml(ent.name) + '</h4>';
+      html += '<p class="answer-desc">' + escapeHtml(ent.description || '暂无简介') + '</p>';
+
+      if (suited.length) {
+        html += '<div class="answer-section">';
+        html += '<h4 class="answer-title">👥 适合对象</h4>';
+        html += '<ul class="answer-list">';
+        suited.forEach(function (s) {
+          html += '<li>' + linkHtml(s, kgLink(s)) + '</li>';
+        });
+        html += '</ul></div>';
       }
-      lines.push('');
-      lines.push('（以上信息均来自知识图谱官方数据，可点击卡片查看详情）');
-      return lines.join('\n');
+
+      if (needs.length) {
+        html += '<div class="answer-section">';
+        html += '<h4 class="answer-title">⚡ 需要的能力/技能</h4>';
+        html += '<ul class="answer-list">';
+        needs.forEach(function (n) {
+          html += '<li>' + escapeHtml(n) + '</li>';
+        });
+        html += '</ul></div>';
+      }
+
+      if (link) {
+        html += '<div class="answer-section">';
+        html += '<h4 class="answer-title">🔗 官方链接</h4>';
+        html += '<p class="answer-link-box">' + linkHtml(link, link) + '</p>';
+        html += '</div>';
+      }
+
+      html += '<p class="answer-footer">💡 以上信息均来自知识图谱官方数据，详细内容请访问官网查看</p>';
+      html += '</div>';
+      return html;
     }
-    // 3) 兜底：知识库没有相关数据时，提示用户并给出可回答的引导提问
+
+    // 3) 兜底：知识库没有相关数据
     var sampleQs = generateQuickQuestionPool();
-    var suggest = sampleQs.slice(0, 3).map(function (q) { return '· ' + q; }).join('\n');
-    return '我的知识库暂时没有相关数据请换一个问题吧\n\n👉你可以试试这些提问：\n' + suggest;
+    var suggest = sampleQs.slice(0, 3);
+    var html = '<div class="answer-content answer-empty">';
+    html += '<p class="answer-empty-text">🤔 我的知识库暂时没有相关数据，请换一个问题吧</p>';
+    html += '<div class="answer-section">';
+    html += '<h4 class="answer-title">💡 你可以试试这些提问：</h4>';
+    html += '<ul class="answer-list">';
+    suggest.forEach(function (q) {
+      html += '<li>' + escapeHtml(q) + '</li>';
+    });
+    html += '</ul></div>';
+    html += '</div>';
+    return html;
   }
 
   // 从知识库生成候选提问池，全部是知识库可回答的问题
@@ -466,7 +551,12 @@
 
     var bubble = document.createElement('div');
     bubble.className = 'message-bubble';
-    bubble.textContent = text;
+    // AI回答用HTML渲染（支持加粗、列表、链接），用户消息用纯文本防止XSS
+    if (isUser) {
+      bubble.textContent = text;
+    } else {
+      bubble.innerHTML = text;
+    }
 
     msg.appendChild(avatar);
     msg.appendChild(bubble);
