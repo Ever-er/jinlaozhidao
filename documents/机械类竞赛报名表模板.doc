@@ -1,0 +1,75 @@
+<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">
+<head>
+<meta charset="utf-8">
+<title>机械类竞赛报名表模板</title>
+<!--[if gte mso 9]><xml><w:WordDocument><w:View>Print</w:View><w:Zoom>100</w:Zoom></w:WordDocument></xml><![endif]-->
+<style>
+body { font-family: "宋体", SimSun, serif; font-size: 12pt; line-height: 1.8; color: #000; }
+h1 { text-align: center; font-size: 18pt; font-weight: bold; margin-bottom: 6px; }
+.subtitle { text-align: center; font-size: 11pt; color: #333; margin-bottom: 20px; }
+table { border-collapse: collapse; width: 100%; margin-bottom: 16px; }
+td, th { border: 1px solid #000; padding: 8px 10px; font-size: 11pt; }
+th { background: #f0f0f0; font-weight: bold; text-align: center; }
+.label { background: #f5f5f5; font-weight: bold; width: 120px; text-align: center; }
+.section-title { font-size: 13pt; font-weight: bold; margin: 16px 0 8px; border-left: 4px solid #0F2C5C; padding-left: 10px; }
+.note { font-size: 10pt; color: #666; margin-top: 8px; }
+.sign-area { margin-top: 30px; }
+.sign-row { display: flex; justify-content: space-between; margin-bottom: 20px; }
+</style>
+</head>
+<body>
+
+<h1>全国大学生机械类竞赛报名表</h1>
+<p class="subtitle">（通用模板 · 适用于机械创新设计大赛、智能制造赛等）</p>
+
+<div class="section-title">一、参赛作品基本信息</div>
+<table>
+<tr><td class="label">作品名称</td><td colspan="3"></td></tr>
+<tr><td class="label">参赛赛道</td><td></td><td class="label">作品类别</td><td></td></tr>
+<tr><td class="label">参赛学校</td><td colspan="3"></td></tr>
+<tr><td class="label">所属学院</td><td></td><td class="label">专业班级</td><td></td></tr>
+<tr><td class="label">指导教师</td><td></td><td class="label">联系电话</td><td></td></tr>
+</table>
+
+<div class="section-title">二、团队成员信息</div>
+<table>
+<tr><th>序号</th><th>姓名</th><th>学号</th><th>专业班级</th><th>分工</th><th>联系电话</th></tr>
+<tr><td style="text-align:center">1（队长）</td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td style="text-align:center">2</td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td style="text-align:center">3</td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td style="text-align:center">4</td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td style="text-align:center">5</td><td></td><td></td><td></td><td></td><td></td></tr>
+</table>
+
+<div class="section-title">三、作品简介</div>
+<table>
+<tr><td style="height:120px; vertical-align:top;">
+<p style="margin-bottom:8px; color:#666; font-size:10pt;">（请简要描述作品的创新点、技术方案、应用前景等，300字以内）</p>
+</td></tr>
+</table>
+
+<div class="section-title">四、提交材料清单</div>
+<table>
+<tr><th>序号</th><th>材料名称</th><th>格式要求</th><th>是否提交</th></tr>
+<tr><td style="text-align:center">1</td><td>报名表（本表）</td><td>DOCX/PDF</td><td>□ 是 □ 否</td></tr>
+<tr><td style="text-align:center">2</td><td>设计说明书</td><td>PDF（≤30页）</td><td>□ 是 □ 否</td></tr>
+<tr><td style="text-align:center">3</td><td>设计图纸</td><td>PDF（A0/A1）</td><td>□ 是 □ 否</td></tr>
+<tr><td style="text-align:center">4</td><td>作品演示视频</td><td>MP4（≤5分钟）</td><td>□ 是 □ 否</td></tr>
+<tr><td style="text-align:center">5</td><td>作品实物照片</td><td>JPG（≥3张）</td><td>□ 是 □ 否</td></tr>
+</table>
+
+<div class="sign-area">
+<div class="sign-row">
+<div>队长签字：_______________</div>
+<div>指导教师签字：_______________</div>
+</div>
+<div class="sign-row">
+<div>学院盖章：_______________</div>
+<div>日期：______年____月____日</div>
+</div>
+</div>
+
+<p class="note">说明：本模板为通用参考模板，具体报名要求以各竞赛组委会官方通知为准。作品名称须用中文表述，由学校统一向赛区组委会报名。</p>
+
+</body>
+</html>

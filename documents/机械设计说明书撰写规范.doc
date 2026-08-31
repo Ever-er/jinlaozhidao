@@ -1,0 +1,160 @@
+<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">
+<head>
+<meta charset="utf-8">
+<title>机械设计说明书撰写规范</title>
+<style>
+body { font-family: "宋体", SimSun, serif; font-size: 12pt; line-height: 1.8; color: #000; }
+h1 { text-align: center; font-size: 18pt; font-weight: bold; margin-bottom: 6px; }
+.subtitle { text-align: center; font-size: 11pt; color: #333; margin-bottom: 20px; }
+h2 { font-size: 14pt; font-weight: bold; margin: 18px 0 10px; color: #0F2C5C; border-bottom: 2px solid #0F2C5C; padding-bottom: 4px; }
+h3 { font-size: 12.5pt; font-weight: bold; margin: 14px 0 8px; color: #1e40af; }
+table { border-collapse: collapse; width: 100%; margin: 10px 0; }
+td, th { border: 1px solid #ccc; padding: 8px; font-size: 11pt; }
+th { background: #f0f0f0; }
+.tip { background: #f0f7ff; border-left: 4px solid #2563EB; padding: 10px 14px; margin: 12px 0; font-size: 11pt; }
+.warn { background: #fff5f0; border-left: 4px solid #EA580C; padding: 10px 14px; margin: 12px 0; font-size: 11pt; }
+ul, ol { margin-left: 24px; font-size: 11pt; }
+</style>
+</head>
+<body>
+
+<h1>机械设计说明书撰写规范</h1>
+<p class="subtitle">适用于全国大学生机械创新设计大赛等机械类竞赛</p>
+
+<h2>一、总体要求</h2>
+<ul>
+<li>说明书应完整、清晰地阐述作品的设计思路、技术方案、创新点与实现过程</li>
+<li>字数一般不少于5000字，正文不超过30页（A4）</li>
+<li>使用中文撰写，专业术语规范，图表清晰，引用注明出处</li>
+<li>提交格式为PDF，文件命名：学校名称_作品名称_设计说明书.pdf</li>
+</ul>
+
+<h2>二、格式规范</h2>
+<table>
+<tr><th>项目</th><th>要求</th></tr>
+<tr><td>纸张</td><td>A4（210mm × 297mm）</td></tr>
+<tr><td>页边距</td><td>上2.5cm，下2.5cm，左2.5cm，右2cm</td></tr>
+<tr><td>正文字体</td><td>宋体，小四号（12pt），1.5倍行距</td></tr>
+<tr><td>一级标题</td><td>黑体，三号（16pt），加粗</td></tr>
+<tr><td>二级标题</td><td>黑体，四号（14pt），加粗</td></tr>
+<tr><td>三级标题</td><td>黑体，小四号（12pt），加粗</td></tr>
+<tr><td>图表标题</td><td>宋体，五号（10.5pt），图题在下方，表题在上方</td></tr>
+<tr><td>页码</td><td>底部居中，从正文开始编号</td></tr>
+</table>
+
+<h2>三、结构框架</h2>
+
+<h3>封面</h3>
+<ul>
+<li>作品名称（中文）</li>
+<li>参赛学校、学院、团队名称</li>
+<li>团队成员、指导教师</li>
+<li>提交日期</li>
+</ul>
+
+<h3>摘要（300字以内）</h3>
+<ul>
+<li>作品概述：解决什么问题，采用什么方案</li>
+<li>核心创新点：2-3条</li>
+<li>技术指标：关键性能参数</li>
+<li>关键词：3-5个</li>
+</ul>
+
+<h3>目录</h3>
+<p>自动生成，包含各级标题及页码。</p>
+
+<h3>正文</h3>
+
+<h3>1. 选题背景与意义</h3>
+<ul>
+<li>研究背景：行业现状、存在的问题</li>
+<li>选题意义：作品的应用价值与社会意义</li>
+<li>国内外研究现状：已有方案及其不足</li>
+</ul>
+
+<h3>2. 作品总体方案设计</h3>
+<ul>
+<li>设计目标与技术指标</li>
+<li>总体方案：工作原理、系统组成</li>
+<li>方案对比：多种方案的分析与选择</li>
+<li>总体结构框图/示意图</li>
+</ul>
+
+<h3>3. 机械结构设计</h3>
+<ul>
+<li>传动系统设计：传动方案、传动比计算</li>
+<li>关键零部件设计：结构、尺寸、材料选择</li>
+<li>强度校核与刚度分析</li>
+<li>标准件选用</li>
+<li>三维建模与装配</li>
+</ul>
+
+<h3>4. 控制系统设计（如适用）</h3>
+<ul>
+<li>控制方案：控制器选型、传感器配置</li>
+<li>硬件电路设计</li>
+<li>软件流程与算法</li>
+<li>人机交互设计</li>
+</ul>
+
+<h3>5. 创新点分析</h3>
+<ul>
+<li>结构创新：新机构、新构型</li>
+<li>功能创新：新功能、新应用</li>
+<li>方法创新：新算法、新工艺</li>
+<li>与现有技术的对比优势</li>
+</ul>
+
+<h3>6. 性能测试与分析</h3>
+<ul>
+<li>测试方案与测试环境</li>
+<li>测试数据与结果分析</li>
+<li>与设计指标的对比</li>
+<li>存在的问题与改进方向</li>
+</ul>
+
+<h3>7. 应用前景与推广价值</h3>
+<ul>
+<li>应用场景分析</li>
+<li>市场前景与经济效益</li>
+<li>推广可行性</li>
+</ul>
+
+<h3>参考文献</h3>
+<ul>
+<li>按GB/T 7714格式列出，不少于10篇</li>
+<li>包含期刊论文、专利、标准、网页等</li>
+</ul>
+
+<h3>附录（可选）</h3>
+<ul>
+<li>详细计算过程</li>
+<li>程序代码清单</li>
+<li>零件明细表</li>
+</ul>
+
+<h2>四、图纸规范</h2>
+<ul>
+<li>总装配图：A0或A1幅面，包含完整视图、尺寸标注、技术要求、零件序号与明细栏</li>
+<li>部件装配图：表达关键部件的装配关系</li>
+<li>重要零件图：标注完整尺寸、公差、表面粗糙度、材料与热处理要求</li>
+<li>图纸符合GB/T 4457-4460机械制图国家标准</li>
+<li>图线、字体、标注规范统一</li>
+</ul>
+
+<div class="warn"><strong>重要提醒：</strong>主要设计图纸不合格的作品将在全国决赛初评审查中直接淘汰！请务必确保图纸完整、规范、清晰。</div>
+
+<h2>五、评分标准参考</h2>
+<table>
+<tr><th>评分项</th><th>权重</th><th>评分要点</th></tr>
+<tr><td>创新性</td><td>30%</td><td>设计思路新颖，结构/功能/方法有创新</td></tr>
+<tr><td>实用性</td><td>25%</td><td>解决实际问题，应用价值高，可推广</td></tr>
+<tr><td>设计合理性</td><td>20%</td><td>结构设计合理，计算正确，工艺可行</td></tr>
+<tr><td>制作质量</td><td>15%</td><td>实物制作精良，运行稳定可靠</td></tr>
+<tr><td>文档质量</td><td>10%</td><td>说明书规范，图纸完整，表达清晰</td></tr>
+</table>
+
+<div class="tip"><strong>建议：</strong>提前2周完成说明书初稿，预留充足时间进行修改、排版和图纸审查。团队分工明确，每人负责1-2个章节，最后由队长统一审校格式和术语。</div>
+
+</body>
+</html>

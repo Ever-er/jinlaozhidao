@@ -1,0 +1,101 @@
+<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">
+<head>
+<meta charset="utf-8">
+<title>团队组建与合作协议</title>
+<style>
+body { font-family: "宋体", SimSun, serif; font-size: 12pt; line-height: 1.8; color: #000; }
+h1 { text-align: center; font-size: 18pt; font-weight: bold; margin-bottom: 6px; }
+.subtitle { text-align: center; font-size: 11pt; color: #333; margin-bottom: 20px; }
+h2 { font-size: 14pt; font-weight: bold; margin: 18px 0 10px; color: #0F2C5C; border-bottom: 2px solid #0F2C5C; padding-bottom: 4px; }
+table { border-collapse: collapse; width: 100%; margin: 10px 0; }
+td, th { border: 1px solid #000; padding: 8px; font-size: 11pt; }
+th { background: #f0f0f0; }
+.clause { margin-bottom: 10px; font-size: 11pt; }
+.clause-title { font-weight: bold; }
+.sign-area { margin-top: 40px; }
+.sign-row { margin-bottom: 30px; }
+</style>
+</head>
+<body>
+
+<h1>竞赛团队合作协议</h1>
+<p class="subtitle">（适用于机械类学科竞赛团队）</p>
+
+<p>为明确团队成员权利义务，保障竞赛项目顺利推进，经全体成员协商一致，订立本协议。</p>
+
+<h2>一、团队基本信息</h2>
+<table>
+<tr><td style="width:120px; background:#f5f5f5; font-weight:bold; text-align:center;">团队名称</td><td colspan="3"></td></tr>
+<tr><td style="background:#f5f5f5; font-weight:bold; text-align:center;">参赛赛事</td><td colspan="3"></td></tr>
+<tr><td style="background:#f5f5f5; font-weight:bold; text-align:center;">作品名称</td><td colspan="3"></td></tr>
+<tr><td style="background:#f5f5f5; font-weight:bold; text-align:center;">指导教师</td><td></td><td style="background:#f5f5f5; font-weight:bold; text-align:center;">所属学院</td><td></td></tr>
+</table>
+
+<h2>二、成员信息与分工</h2>
+<table>
+<tr><th>序号</th><th>姓名</th><th>学号</th><th>专业班级</th><th>团队角色</th><th>主要分工</th><th>联系电话</th></tr>
+<tr><td style="text-align:center">1</td><td></td><td></td><td></td><td>队长</td><td>总体协调/结构设计</td><td></td></tr>
+<tr><td style="text-align:center">2</td><td></td><td></td><td></td><td>队员</td><td>机械设计/建模</td><td></td></tr>
+<tr><td style="text-align:center">3</td><td></td><td></td><td></td><td>队员</td><td>控制系统/编程</td><td></td></tr>
+<tr><td style="text-align:center">4</td><td></td><td></td><td></td><td>队员</td><td>文档撰写/图纸</td><td></td></tr>
+<tr><td style="text-align:center">5</td><td></td><td></td><td></td><td>队员</td><td>实物制作/测试</td><td></td></tr>
+</table>
+
+<h2>三、权利与义务</h2>
+
+<div class="clause"><span class="clause-title">第一条 团队成员权利：</span>
+（1）参与团队重大决策的讨论与表决；（2）按分工使用团队共享的设备、资料与经费；（3）对团队工作提出建议和批评；（4）在获奖证书、成果认定中享有相应署名权。</div>
+
+<div class="clause"><span class="clause-title">第二条 团队成员义务：</span>
+（1）遵守团队纪律，按时完成分工任务；（2）参加团队例会和集体讨论，不得无故缺席；（3）维护团队团结，不得泄露团队技术方案和未公开信息；（4）尊重他人劳动成果，不得抄袭或剽窃；（5）主动配合其他成员完成交叉任务。</div>
+
+<h2>四、工作制度</h2>
+
+<div class="clause"><span class="clause-title">第三条 例会制度：</span>每周至少召开一次团队例会，汇报进度、讨论问题、安排下周任务。会议由队长主持，指定专人记录。</div>
+
+<div class="clause"><span class="clause-title">第四条 进度管理：</span>制定详细的项目进度计划，明确各阶段里程碑和交付物。队长负责跟踪进度，对延期任务及时预警和调整。</div>
+
+<div class="clause"><span class="clause-title">第五条 文档管理：</span>所有设计文档、图纸、代码、测试数据统一存放于共享空间，版本规范命名，定期备份。</div>
+
+<div class="clause"><span class="clause-title">第六条 经费管理：</span>团队经费（如学校资助、奖金等）由队长统一管理，建立收支台账，大额支出需全体成员同意。赛后剩余经费按成员贡献协商分配。</div>
+
+<h2>五、知识产权约定</h2>
+
+<div class="clause"><span class="clause-title">第七条 作品知识产权：</span>竞赛作品的知识产权归团队全体成员共同所有。任何成员不得擅自将作品技术方案、设计图纸、代码等用于其他竞赛、论文发表或商业用途，如需使用须经全体成员书面同意。</div>
+
+<div class="clause"><span class="clause-title">第八条 成果署名：</span>获奖证书、论文、专利等成果的署名顺序，按照成员在项目中的实际贡献大小协商确定，队长原则上为第一作者/第一完成人。</div>
+
+<div class="clause"><span class="clause-title">第九条 指导教师权益：</span>指导教师享有指导署名权，如申请专利或发表论文，按学校相关规定确定指导教师的权益。</div>
+
+<h2>六、退队与变更</h2>
+
+<div class="clause"><span class="clause-title">第十条 主动退队：</span>成员因个人原因需退出团队，应提前两周向队长提出书面说明，并完成手头工作的交接。退队后不再享有该项目后续成果的署名权和权益分配。</div>
+
+<div class="clause"><span class="clause-title">第十一条 劝退：</span>成员严重违反团队纪律、长期不完成任务或影响团队团结，经全体成员三分之二以上表决通过，可予以劝退。</div>
+
+<div class="clause"><span class="clause-title">第十二条 成员变更：</span>团队成员的增加或减少，需经全体成员一致同意，并及时向指导教师和赛事组委会报备。</div>
+
+<h2>七、争议解决</h2>
+
+<div class="clause"><span class="clause-title">第十三条：</span>团队内部发生争议时，应首先通过协商解决；协商不成的，可请指导教师调解；调解仍无法解决的，按少数服从多数原则表决，队长有最终决定权。</div>
+
+<h2>八、其他</h2>
+
+<div class="clause"><span class="clause-title">第十四条：</span>本协议自全体成员签字之日起生效，至竞赛结束且所有成果处理完毕后终止。</div>
+
+<div class="clause"><span class="clause-title">第十五条：</span>本协议一式多份，每位成员各执一份，具有同等效力。未尽事宜由全体成员协商补充。</div>
+
+<div class="sign-area">
+<p style="margin-bottom:20px;">全体成员签字：</p>
+<div class="sign-row">
+<table style="border:none;">
+<tr><td style="border:none; width:25%;">队长签字：_______________</td><td style="border:none; width:25%;">日期：____年__月__日</td><td style="border:none; width:25%;">队员签字：_______________</td><td style="border:none; width:25%;">日期：____年__月__日</td></tr>
+<tr><td style="border:none;">队员签字：_______________</td><td style="border:none;">日期：____年__月__日</td><td style="border:none;">队员签字：_______________</td><td style="border:none;">日期：____年__月__日</td></tr>
+<tr><td style="border:none;">队员签字：_______________</td><td style="border:none;">日期：____年__月__日</td><td style="border:none;"></td><td style="border:none;"></td></tr>
+</table>
+</div>
+<p style="margin-top:20px;">指导教师签字：_______________　　日期：____年__月__日</p>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,105 @@
+<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">
+<head>
+<meta charset="utf-8">
+<title>天津志愿服务网注册指南</title>
+<style>
+body { font-family: "宋体", SimSun, serif; font-size: 12pt; line-height: 1.8; color: #000; }
+h1 { text-align: center; font-size: 18pt; font-weight: bold; margin-bottom: 6px; }
+.subtitle { text-align: center; font-size: 11pt; color: #333; margin-bottom: 20px; }
+h2 { font-size: 14pt; font-weight: bold; margin: 18px 0 10px; color: #0F2C5C; border-bottom: 2px solid #0F2C5C; padding-bottom: 4px; }
+.step { margin-bottom: 14px; padding-left: 10px; }
+.step-num { display: inline-block; width: 24px; height: 24px; background: #0F2C5C; color: #fff; text-align: center; line-height: 24px; border-radius: 50%; font-size: 11pt; margin-right: 8px; }
+.step-title { font-weight: bold; font-size: 12pt; }
+.step-desc { margin-left: 34px; font-size: 11pt; color: #333; }
+.tip { background: #f0f7ff; border-left: 4px solid #2563EB; padding: 10px 14px; margin: 12px 0; font-size: 11pt; }
+.warn { background: #fff5f0; border-left: 4px solid #EA580C; padding: 10px 14px; margin: 12px 0; font-size: 11pt; }
+table { border-collapse: collapse; width: 100%; margin: 10px 0; }
+td, th { border: 1px solid #ccc; padding: 8px; font-size: 11pt; }
+th { background: #f0f0f0; }
+</style>
+</head>
+<body>
+
+<h1>天津志愿服务网注册指南</h1>
+<p class="subtitle">志愿者注册 · 服务时长认证 · 证明材料说明</p>
+
+<h2>一、平台简介</h2>
+<p>天津志愿服务网（tj.zhiyuanyun.com）是天津市志愿服务联合会官方平台，负责全市志愿者注册、志愿项目发布、服务时长记录与认证。所有志愿服务时长均通过该平台官方认证，可用于学分认定、评优评先等。</p>
+
+<h2>二、注册流程</h2>
+
+<div class="step">
+<span class="step-num">1</span><span class="step-title">访问官网</span>
+<div class="step-desc">打开浏览器，访问天津志愿服务网：<strong>tj.zhiyuanyun.com</strong></div>
+</div>
+
+<div class="step">
+<span class="step-num">2</span><span class="step-title">点击注册</span>
+<div class="step-desc">在首页右上角点击"注册"按钮，选择"个人志愿者注册"</div>
+</div>
+
+<div class="step">
+<span class="step-num">3</span><span class="step-title">填写基本信息</span>
+<div class="step-desc">填写姓名、身份证号、手机号、邮箱等真实信息，设置登录密码</div>
+</div>
+
+<div class="step">
+<span class="step-num">4</span><span class="step-title">选择服务类别</span>
+<div class="step-desc">根据兴趣选择服务类别：文化教育、社区服务、绿色环保、赛会服务、科技助农等</div>
+</div>
+
+<div class="step">
+<span class="step-num">5</span><span class="step-title">实名认证</span>
+<div class="step-desc">上传身份证照片或通过人脸识别完成实名认证（部分项目要求）</div>
+</div>
+
+<div class="step">
+<span class="step-num">6</span><span class="step-title">注册完成</span>
+<div class="step-desc">提交后获得志愿者编号，即可浏览并报名志愿项目</div>
+</div>
+
+<div class="tip"><strong>提示：</strong>在校大学生可选择"高校志愿者"身份，关联所在学校，便于学校统一管理时长认定。</div>
+
+<h2>三、报名与服务流程</h2>
+<table>
+<tr><th>步骤</th><th>操作</th><th>说明</th></tr>
+<tr><td>1</td><td>浏览项目</td><td>在"志愿项目"列表按类别、地区筛选</td></tr>
+<tr><td>2</td><td>点击报名</td><td>进入项目详情页，点击"我要报名"</td></tr>
+<tr><td>3</td><td>等待审核</td><td>项目方审核报名信息，通常1-3个工作日</td></tr>
+<tr><td>4</td><td>参加培训</td><td>通过审核后参加项目方组织的岗前培训</td></tr>
+<tr><td>5</td><td>到岗服务</td><td>按安排时间到岗服务，签到签退</td></tr>
+<tr><td>6</td><td>时长录入</td><td>服务结束后项目方录入服务时长</td></tr>
+</table>
+
+<h2>四、服务时长认证标准</h2>
+<ul style="margin-left:20px; font-size:11pt;">
+<li>服务时长以实际签到签退时间为准，由项目方在平台录入</li>
+<li>单次服务不足30分钟不计入时长，超过30分钟按实际时长计算</li>
+<li>培训时长单独记录，不计入志愿服务时长</li>
+<li>时长录入后可在"个人中心-服务记录"中查看</li>
+<li>对时长有异议可在7个工作日内向项目方申诉</li>
+</ul>
+
+<h2>五、证明材料获取</h2>
+<div class="step">
+<span class="step-num">1</span><span class="step-title">登录个人中心</span>
+<div class="step-desc">在"服务记录"页面查看已完成的志愿服务</div>
+</div>
+<div class="step">
+<span class="step-num">2</span><span class="step-title">申请证明</span>
+<div class="step-desc">选择需要证明的服务记录，点击"生成志愿服务证明"</div>
+</div>
+<div class="step">
+<span class="step-num">3</span><span class="step-title">下载打印</span>
+<div class="step-desc">系统生成带电子印章的PDF证明文件，可下载打印</div>
+</div>
+
+<div class="warn"><strong>注意：</strong>志愿服务证明需由项目方确认服务完成后才能生成。如服务记录显示"待确认"，请联系项目方尽快确认。</div>
+
+<h2>六、常见问题</h2>
+<p><strong>Q：注册时身份证号已被占用怎么办？</strong><br>A：可能是之前注册过，可通过"忘记密码"功能找回；如非本人注册，联系平台客服处理。</p>
+<p><strong>Q：服务时长多久能录入？</strong><br>A：通常服务结束后3-7个工作日内由项目方录入，如超时未录入请主动联系项目负责人。</p>
+<p><strong>Q：可以同时报名多个项目吗？</strong><br>A：可以，但需确保服务时间不冲突，且能保证服务质量。</p>
+
+</body>
+</html>
