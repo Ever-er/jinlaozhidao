@@ -912,6 +912,14 @@
         '<input type="text" class="form-input" id="registerMajor" placeholder="如：机械工程">' +
         '</div>' +
         '</div>' +
+        '<div class="form-group" id="studentClassGroup">' +
+        '<label class="form-label" for="registerClassName">班级 <span class="required">*</span></label>' +
+        '<input type="text" class="form-input" id="registerClassName" placeholder="如：机械2401班">' +
+        '</div>' +
+        '<div class="form-group" id="teacherClassGroup" style="display:none;">' +
+        '<label class="form-label" for="registerTeachesClasses">教授的班级（多个班级用逗号分隔）</label>' +
+        '<input type="text" class="form-input" id="registerTeachesClasses" placeholder="如：机械2401班,机械2402班">' +
+        '</div>' +
         '<div class="form-row">' +
         '<div class="form-group">' +
         '<label class="form-label" for="registerPhone">手机号</label>' +
@@ -949,7 +957,10 @@
         handleRegister();
       });
       document.getElementById('registerRole').addEventListener('change', function() {
-        document.getElementById('studentFields').style.display = this.value === 'student' ? 'grid' : 'none';
+        var isStudent = this.value === 'student';
+        document.getElementById('studentFields').style.display = isStudent ? 'grid' : 'none';
+        document.getElementById('studentClassGroup').style.display = isStudent ? 'block' : 'none';
+        document.getElementById('teacherClassGroup').style.display = isStudent ? 'none' : 'block';
       });
       document.getElementById('switchToLogin').addEventListener('click', function () {
         authTabBtns.forEach(function (t) { t.classList.toggle('active', t.getAttribute('data-tab') === 'login'); });
@@ -1781,6 +1792,11 @@
     var phone = phoneEl ? phoneEl.value.trim() : '';
     var emailEl = document.getElementById('registerEmail');
     var email = emailEl ? emailEl.value.trim() : '';
+    var classEl = document.getElementById('registerClassName');
+    var class_name = classEl ? classEl.value.trim() : '';
+    var teachesEl = document.getElementById('registerTeachesClasses');
+    var teachesStr = teachesEl ? teachesEl.value.trim() : '';
+    var teaches_classes = teachesStr ? teachesStr.split(/[,，]/).map(function(s){return s.trim();}).filter(function(s){return s;}) : [];
     if (!username || !password || !name) {
       errorEl.textContent = '请填写必填项';
       errorEl.classList.add('show');
@@ -1791,11 +1807,17 @@
       errorEl.classList.add('show');
       return;
     }
+    if (role === 'student' && !class_name) {
+      errorEl.textContent = '请填写班级';
+      errorEl.classList.add('show');
+      return;
+    }
     errorEl.classList.remove('show');
     _api('/api/register', { method: 'POST', body: JSON.stringify({
       username: username, password: password, name: name, role: role,
       grade: grade, major: major, phone: phone, email: email,
-      student_id: username, teacher_title: ''
+      student_id: username, teacher_title: '',
+      class_name: class_name, teaches_classes: teaches_classes
     })}).then(function() {
       successEl.textContent = '注册成功！请登录';
       errorEl.textContent = '';
@@ -1905,8 +1927,11 @@
   }
 
   function _renderStudentUpload(el) {
-    el.innerHTML = '<div class="upload-area-inline" id="uploadAreaInline"><div class="icon">📁</div><p><strong>点击选择文件</strong> 或拖拽文件到此处</p><p style="font-size:12px;margin-top:4px;">支持任意格式，单个文件最大2GB</p><div class="file-name" id="uploadFileNameInline"></div></div><input type="file" id="fileInputInline" style="display:none;"><div id="sendToTeacherInline" style="display:none;"><div class="form-group-inline"><label>选择老师</label><select id="teacherSelectInline"><option value="">请选择老师</option></select></div><div class="form-group-inline"><label>作品说明（可选）</label><textarea id="fileDescInline" rows="3" placeholder="简要说明作品内容、竞赛名称等"></textarea></div><button class="role-btn role-btn-primary" id="btnSendInline" style="padding:10px 24px;font-size:14px;">📤 发送给老师批改</button></div>';
+    var studentClass = _currentUser && _currentUser.class_name ? _currentUser.class_name : '';
+    el.innerHTML = '<div class="upload-area-inline" id="uploadAreaInline"><div class="icon">📁</div><p><strong>点击选择文件</strong> 或拖拽文件到此处</p><p style="font-size:12px;margin-top:4px;">支持任意格式，单个文件最大2GB</p><div class="file-name" id="uploadFileNameInline"></div></div><input type="file" id="fileInputInline" style="display:none;"><div id="sendToTeacherInline" style="display:none;"><div class="form-group-inline"><label>选择老师' + (studentClass ? '（默认显示' + studentClass + '的老师）' : '') + '</label><div style="display:flex;gap:8px;margin-bottom:8px;"><input type="text" id="teacherSearchInput" placeholder="搜索老师名字..." style="flex:1;padding:8px 10px;border:1px solid #cbd5e1;border-radius:6px;font-size:13px;"><button class="role-btn role-btn-secondary" id="btnToggleAllTeachers" style="white-space:nowrap;">显示全部</button></div><select id="teacherSelectInline" style="width:100%;"><option value="">请选择老师</option></select><p id="teacherListHint" style="font-size:12px;color:#64748b;margin-top:4px;"></p></div><div class="form-group-inline"><label>作品说明（可选）</label><textarea id="fileDescInline" rows="3" placeholder="简要说明作品内容、竞赛名称等"></textarea></div><button class="role-btn role-btn-primary" id="btnSendInline" style="padding:10px 24px;font-size:14px;">📤 发送给老师批改</button></div>';
     var _selectedFileId = null;
+    var _showAllTeachers = false;
+    var _allTeachers = [];
     var area = document.getElementById('uploadAreaInline');
     var input = document.getElementById('fileInputInline');
     area.onclick = function() { input.click(); };
@@ -1914,15 +1939,55 @@
     area.addEventListener('dragleave', function() { area.classList.remove('dragover'); });
     area.addEventListener('drop', function(e) { e.preventDefault(); area.classList.remove('dragover'); _doUploadInline(e.dataTransfer.files[0]); });
     input.onchange = function() { if (this.files[0]) _doUploadInline(this.files[0]); };
-    _api('/api/teachers').then(function(data) {
-      var sel = document.getElementById('teacherSelectInline');
-      data.teachers.forEach(function(t) {
-        var opt = document.createElement('option');
-        opt.value = t.id;
-        opt.textContent = t.name + '（' + (t.teacher_title || t.major || '老师') + '）';
-        sel.appendChild(opt);
-      });
-    }).catch(function() {});
+
+    // 加载老师列表
+    function loadTeachers(search) {
+      var url = '/api/teachers?';
+      if (!_showAllTeachers && studentClass) {
+        url += 'class_name=' + encodeURIComponent(studentClass) + '&';
+      }
+      if (search) {
+        url += 'search=' + encodeURIComponent(search) + '&all=1&';
+      }
+      _api(url).then(function(data) {
+        _allTeachers = data.teachers;
+        var sel = document.getElementById('teacherSelectInline');
+        sel.innerHTML = '<option value="">请选择老师</option>';
+        data.teachers.forEach(function(t) {
+          var opt = document.createElement('option');
+          opt.value = t.id;
+          var classInfo = Array.isArray(t.teaches_classes) && t.teaches_classes.length > 0 ? '（教：' + t.teaches_classes.join('、') + '）' : '';
+          opt.textContent = t.name + '（' + (t.teacher_title || t.major || '老师') + '）' + classInfo;
+          sel.appendChild(opt);
+        });
+        var hint = document.getElementById('teacherListHint');
+        if (data.teachers.length === 0) {
+          hint.textContent = '没有找到老师，点击"显示全部"查看所有老师';
+        } else if (!_showAllTeachers && studentClass && !search) {
+          hint.textContent = '显示' + studentClass + '的老师共' + data.teachers.length + '位，点击"显示全部"可搜索所有老师';
+        } else {
+          hint.textContent = '共' + data.teachers.length + '位老师';
+        }
+      }).catch(function() {});
+    }
+    loadTeachers();
+
+    // 搜索老师
+    var searchTimer = null;
+    document.getElementById('teacherSearchInput').addEventListener('input', function() {
+      clearTimeout(searchTimer);
+      var val = this.value.trim();
+      searchTimer = setTimeout(function() { loadTeachers(val); }, 300);
+    });
+
+    // 切换显示全部老师
+    document.getElementById('btnToggleAllTeachers').onclick = function() {
+      _showAllTeachers = !_showAllTeachers;
+      this.textContent = _showAllTeachers ? '只看本班' : '显示全部';
+      document.getElementById('teacherSearchInput').value = '';
+      loadTeachers();
+    };
+
     function _doUploadInline(file) {
       if (!file) return;
       document.getElementById('uploadFileNameInline').textContent = '已选择：' + file.name + '（' + _formatSize(file.size) + '）';

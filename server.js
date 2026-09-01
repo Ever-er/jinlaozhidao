@@ -127,7 +127,7 @@ function sanitizeUser(user) {
 
 // 注册
 app.post('/api/register', (req, res) => {
-  const { username, password, role, name, grade, major, phone, email, student_id, teacher_title } = req.body;
+  const { username, password, role, name, grade, major, phone, email, student_id, teacher_title, class_name, teaches_classes } = req.body;
   if (!username || !password || !name) return res.status(400).json({ error: '请填写必填项' });
   if (password.length < 6) return res.status(400).json({ error: '密码至少6位' });
   if (!['student', 'teacher'].includes(role)) return res.status(400).json({ error: '无效的角色' });
@@ -145,6 +145,8 @@ app.post('/api/register', (req, res) => {
     email: email || '',
     student_id: student_id || '',
     teacher_title: teacher_title || '',
+    class_name: class_name || '',
+    teaches_classes: Array.isArray(teaches_classes) ? teaches_classes : [],
     status: 'active',
     created_at: new Date().toISOString()
   };
@@ -200,9 +202,28 @@ app.post('/api/change-password', requireLogin, (req, res) => {
 
 // 获取老师列表
 app.get('/api/teachers', requireLogin, (req, res) => {
+  const { search, class_name, all } = req.query;
   const users = readJSON(USERS_FILE, []);
-  const teachers = users.filter(u => u.role === 'teacher' && u.status === 'active').map(sanitizeUser);
-  res.json({ teachers });
+  let teachers = users.filter(u => u.role === 'teacher' && u.status === 'active');
+
+  // 如果指定了班级，只显示教这个班的老师
+  if (class_name && !all) {
+    teachers = teachers.filter(t =>
+      Array.isArray(t.teaches_classes) && t.teaches_classes.includes(class_name)
+    );
+  }
+
+  // 搜索老师名字
+  if (search) {
+    const keyword = search.toLowerCase();
+    teachers = teachers.filter(t =>
+      t.name.toLowerCase().includes(keyword) ||
+      t.username.toLowerCase().includes(keyword) ||
+      (t.teacher_title && t.teacher_title.toLowerCase().includes(keyword))
+    );
+  }
+
+  res.json({ teachers: teachers.map(sanitizeUser) });
 });
 
 // ========== 文件API ==========
