@@ -1744,14 +1744,25 @@
     var username = document.getElementById('loginStudentId').value.trim();
     var password = document.getElementById('loginPassword').value;
     var errorEl = document.getElementById('loginError');
-    if (!username || !password) { errorEl.textContent = '请输入用户名和密码'; return; }
+    if (!username || !password) {
+      errorEl.textContent = '请输入用户名和密码';
+      errorEl.classList.add('show');
+      return;
+    }
+    errorEl.classList.remove('show');
     _api('/api/login', { method: 'POST', body: JSON.stringify({ username: username, password: password }) })
     .then(function(data) {
       _currentUser = data.user;
       closeAuthModal();
       showToast('success', '登录成功', '欢迎回来，' + data.user.name, 2000);
       _updateUserUI();
-    }).catch(function(e) { errorEl.textContent = e.message; });
+      setTimeout(function() {
+        document.getElementById('certify').scrollIntoView({ behavior: 'smooth' });
+      }, 300);
+    }).catch(function(e) {
+      errorEl.textContent = e.message;
+      errorEl.classList.add('show');
+    });
   };
 
   handleRegister = function() {
@@ -1770,8 +1781,17 @@
     var phone = phoneEl ? phoneEl.value.trim() : '';
     var emailEl = document.getElementById('registerEmail');
     var email = emailEl ? emailEl.value.trim() : '';
-    if (!username || !password || !name) { errorEl.textContent = '请填写必填项'; return; }
-    if (password.length < 6) { errorEl.textContent = '密码至少6位'; return; }
+    if (!username || !password || !name) {
+      errorEl.textContent = '请填写必填项';
+      errorEl.classList.add('show');
+      return;
+    }
+    if (password.length < 6) {
+      errorEl.textContent = '密码至少6位';
+      errorEl.classList.add('show');
+      return;
+    }
+    errorEl.classList.remove('show');
     _api('/api/register', { method: 'POST', body: JSON.stringify({
       username: username, password: password, name: name, role: role,
       grade: grade, major: major, phone: phone, email: email,
@@ -1784,10 +1804,14 @@
         tabs.forEach(function(t) { t.classList.toggle('active', t.getAttribute('data-tab') === 'login'); });
         renderAuthForm('login');
       }, 1500);
-    }).catch(function(e) { errorEl.textContent = e.message; });
+    }).catch(function(e) {
+      errorEl.textContent = e.message;
+      errorEl.classList.add('show');
+    });
   };
 
-  btnLogoutNav.onclick = function() {
+  btnLogoutNav.onclick = function(e) {
+    e.stopPropagation();
     _api('/api/logout', { method: 'POST' }).then(function() {
       _currentUser = null;
       _updateUserUI();
@@ -1804,6 +1828,11 @@
     if (_currentUser) {
       navAuth.style.display = 'none';
       navUser.style.display = 'flex';
+      navUser.style.cursor = 'pointer';
+      navUser.title = '点击进入个人中心';
+      navUser.onclick = function() {
+        document.getElementById('certify').scrollIntoView({ behavior: 'smooth' });
+      };
       document.getElementById('navUserName').textContent = _currentUser.name;
       document.getElementById('navUserAvatar').textContent = _currentUser.name.charAt(0);
       certifyGuest.style.display = 'none';
