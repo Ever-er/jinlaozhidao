@@ -407,6 +407,57 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   gap: 24px;
 }
 
+/* ========== 用户系统角色功能区 ========== */
+.role-panel { background: white; border-radius: 12px; padding: 20px; box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
+.role-tabs { display: flex; gap: 8px; margin-bottom: 20px; border-bottom: 2px solid #f1f5f9; padding-bottom: 0; flex-wrap: wrap; }
+.role-tab { padding: 10px 20px; cursor: pointer; font-size: 14px; font-weight: 500; color: #64748b; border-bottom: 2px solid transparent; margin-bottom: -2px; transition: all 0.2s; }
+.role-tab:hover { color: #2563eb; }
+.role-tab.active { color: #2563eb; border-bottom-color: #2563eb; }
+.role-content { min-height: 200px; }
+.role-empty { text-align: center; padding: 40px; color: #94a3b8; }
+.role-empty .icon { font-size: 48px; margin-bottom: 12px; }
+.role-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 12px; margin-bottom: 20px; }
+.role-stat { background: #f8fafc; border-radius: 8px; padding: 16px; text-align: center; }
+.role-stat .num { font-size: 24px; font-weight: 700; color: #1e293b; }
+.role-stat .label { font-size: 12px; color: #64748b; margin-top: 4px; }
+.role-table-wrap { overflow-x: auto; }
+.role-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.role-table th { background: #f8fafc; padding: 10px; text-align: left; font-weight: 600; color: #475569; border-bottom: 2px solid #e2e8f0; white-space: nowrap; }
+.role-table td { padding: 10px; border-bottom: 1px solid #f1f5f9; }
+.role-table tr:hover { background: #f8fafc; }
+.role-btn { padding: 6px 14px; border-radius: 6px; border: none; cursor: pointer; font-size: 13px; font-weight: 500; transition: all 0.2s; margin-right: 4px; }
+.role-btn-primary { background: #2563eb; color: white; }
+.role-btn-primary:hover { background: #1d4ed8; }
+.role-btn-success { background: #16a34a; color: white; }
+.role-btn-success:hover { background: #15803d; }
+.role-btn-warning { background: #d97706; color: white; }
+.role-btn-warning:hover { background: #b45309; }
+.role-btn-danger { background: #dc2626; color: white; }
+.role-btn-danger:hover { background: #b91c1c; }
+.role-btn-secondary { background: #f1f5f9; color: #334155; }
+.role-btn-secondary:hover { background: #e2e8f0; }
+.upload-area-inline { border: 2px dashed #cbd5e1; border-radius: 8px; padding: 30px; text-align: center; cursor: pointer; transition: all 0.2s; background: #f8fafc; margin-bottom: 16px; }
+.upload-area-inline:hover, .upload-area-inline.dragover { border-color: #2563eb; background: #eff6ff; }
+.upload-area-inline .icon { font-size: 36px; margin-bottom: 8px; }
+.upload-area-inline p { color: #64748b; font-size: 14px; }
+.upload-area-inline .file-name { margin-top: 8px; color: #2563eb; font-weight: 500; }
+.form-row-inline { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+.form-group-inline { margin-bottom: 12px; }
+.form-group-inline label { display: block; margin-bottom: 4px; font-size: 13px; font-weight: 500; color: #334155; }
+.form-group-inline input, .form-group-inline select, .form-group-inline textarea { width: 100%; padding: 8px 10px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 13px; }
+.form-group-inline input:focus, .form-group-inline select:focus { outline: none; border-color: #2563eb; }
+.score-badge { display: inline-block; background: #dbeafe; color: #1d4ed8; padding: 2px 10px; border-radius: 10px; font-weight: 700; font-size: 14px; }
+.status-pill { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: 500; }
+.status-pill.pending { background: #fef3c7; color: #92400e; }
+.status-pill.reviewed { background: #dcfce7; color: #166534; }
+.status-pill.active { background: #dcfce7; color: #166534; }
+.status-pill.disabled { background: #fee2e2; color: #991b1b; }
+.role-pill { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: 500; }
+.role-pill.student { background: #dbeafe; color: #1e40af; }
+.role-pill.teacher { background: #f3e8ff; color: #6b21a8; }
+.role-pill.admin { background: #fee2e2; color: #991b1b; }
+.file-size-text { color: #64748b; font-size: 12px; }
+
 .card {
   background: var(--c-white);
   border: 1px solid var(--c-border);

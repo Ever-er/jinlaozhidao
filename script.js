@@ -879,45 +879,57 @@
         '<div class="form-success" id="registerSuccess"></div>' +
         '<form id="registerForm">' +
         '<div class="form-group">' +
-        '<label class="form-label" for="regName">姓名 <span class="required">*</span></label>' +
-        '<input type="text" class="form-input" id="regName" placeholder="请输入真实姓名" required>' +
+        '<label class="form-label">身份 <span class="required">*</span></label>' +
+        '<select class="form-input" id="registerRole">' +
+        '<option value="student">学生</option>' +
+        '<option value="teacher">老师</option>' +
+        '</select>' +
         '</div>' +
         '<div class="form-row">' +
         '<div class="form-group">' +
-        '<label class="form-label" for="regStudentId">学号 <span class="required">*</span></label>' +
-        '<input type="text" class="form-input" id="regStudentId" placeholder="请输入学号" required>' +
+        '<label class="form-label" for="registerName">姓名 <span class="required">*</span></label>' +
+        '<input type="text" class="form-input" id="registerName" placeholder="请输入真实姓名" required>' +
         '</div>' +
         '<div class="form-group">' +
-        '<label class="form-label" for="regClassName">班级 <span class="required">*</span></label>' +
-        '<input type="text" class="form-input" id="regClassName" placeholder="如：机械2401班" required>' +
+        '<label class="form-label" for="registerStudentId">用户名/学号 <span class="required">*</span></label>' +
+        '<input type="text" class="form-input" id="registerStudentId" placeholder="登录用的用户名" required>' +
         '</div>' +
+        '</div>' +
+        '<div class="form-row" id="studentFields">' +
+        '<div class="form-group">' +
+        '<label class="form-label" for="registerGrade">年级</label>' +
+        '<select class="form-input" id="registerGrade">' +
+        '<option value="">请选择</option>' +
+        '<option value="大一">大一</option>' +
+        '<option value="大二">大二</option>' +
+        '<option value="大三">大三</option>' +
+        '<option value="大四">大四</option>' +
+        '<option value="研究生">研究生</option>' +
+        '</select>' +
         '</div>' +
         '<div class="form-group">' +
-        '<label class="form-label" for="regEnrollmentDate">入学时间 <span class="required">*</span></label>' +
-        '<input type="date" class="form-input" id="regEnrollmentDate" required>' +
+        '<label class="form-label" for="registerMajor">专业</label>' +
+        '<input type="text" class="form-input" id="registerMajor" placeholder="如：机械工程">' +
         '</div>' +
-        '<div class="form-group">' +
-        '<label class="form-label" for="regCollege">学院 <span class="required">*</span></label>' +
-        '<input type="text" class="form-input" id="regCollege" placeholder="如：机械工程学院" required>' +
         '</div>' +
         '<div class="form-row">' +
         '<div class="form-group">' +
-        '<label class="form-label" for="regPhone">手机号 <span class="required">*</span></label>' +
-        '<input type="tel" class="form-input" id="regPhone" placeholder="请输入手机号" required>' +
+        '<label class="form-label" for="registerPhone">手机号</label>' +
+        '<input type="tel" class="form-input" id="registerPhone" placeholder="手机号">' +
         '</div>' +
         '<div class="form-group">' +
-        '<label class="form-label" for="regEmail">邮箱 <span class="required">*</span></label>' +
-        '<input type="email" class="form-input" id="regEmail" placeholder="请输入邮箱" required>' +
+        '<label class="form-label" for="registerEmail">邮箱</label>' +
+        '<input type="email" class="form-input" id="registerEmail" placeholder="邮箱">' +
         '</div>' +
         '</div>' +
         '<div class="form-row">' +
         '<div class="form-group">' +
-        '<label class="form-label" for="regPassword">密码 <span class="required">*</span></label>' +
-        '<input type="password" class="form-input" id="regPassword" placeholder="至少6位" required>' +
+        '<label class="form-label" for="registerPassword">密码 <span class="required">*</span></label>' +
+        '<input type="password" class="form-input" id="registerPassword" placeholder="至少6位" required>' +
         '</div>' +
         '<div class="form-group">' +
-        '<label class="form-label" for="regPasswordConfirm">确认密码 <span class="required">*</span></label>' +
-        '<input type="password" class="form-input" id="regPasswordConfirm" placeholder="再次输入密码" required>' +
+        '<label class="form-label">确认密码 <span class="required">*</span></label>' +
+        '<input type="password" class="form-input" id="registerPasswordConfirm" placeholder="再次输入密码" required>' +
         '</div>' +
         '</div>' +
         '<div class="form-actions">' +
@@ -928,7 +940,16 @@
 
       document.getElementById('registerForm').addEventListener('submit', function (e) {
         e.preventDefault();
+        var pwd = document.getElementById('registerPassword').value;
+        var pwd2 = document.getElementById('registerPasswordConfirm').value;
+        if (pwd !== pwd2) {
+          document.getElementById('registerError').textContent = '两次密码不一致';
+          return;
+        }
         handleRegister();
+      });
+      document.getElementById('registerRole').addEventListener('change', function() {
+        document.getElementById('studentFields').style.display = this.value === 'student' ? 'grid' : 'none';
       });
       document.getElementById('switchToLogin').addEventListener('click', function () {
         authTabBtns.forEach(function (t) { t.classList.toggle('active', t.getAttribute('data-tab') === 'login'); });
@@ -1676,6 +1697,345 @@
 
   // 初始化认证 UI
   updateAuthUI();
+
+  /* ============================================================
+   * 新版用户系统（后端API版）
+   * 支持学生/老师/管理员三种角色
+   * 文件上传收发、批改打分、管理员后台
+   * ============================================================ */
+  var _currentUser = null;
+  var _currentRoleTab = '';
+
+  function _api(url, options) {
+    options = options || {};
+    return fetch(url, {
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'same-origin',
+      ...options
+    }).then(function(res) {
+      return res.json().then(function(data) {
+        if (!res.ok) throw new Error(data.error || '请求失败');
+        return data;
+      });
+    });
+  }
+
+  function _formatSize(bytes) {
+    if (!bytes) return '0 B';
+    if (bytes < 1024) return bytes + ' B';
+    if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+    if (bytes < 1024 * 1024 * 1024) return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
+    return (bytes / (1024 * 1024 * 1024)).toFixed(2) + ' GB';
+  }
+
+  function _formatDate(str) {
+    if (!str) return '-';
+    return new Date(str).toLocaleString('zh-CN');
+  }
+
+  function _esc(str) {
+    if (!str) return '';
+    var div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+  }
+
+  handleLogin = function() {
+    var username = document.getElementById('loginStudentId').value.trim();
+    var password = document.getElementById('loginPassword').value;
+    var errorEl = document.getElementById('loginError');
+    if (!username || !password) { errorEl.textContent = '请输入用户名和密码'; return; }
+    _api('/api/login', { method: 'POST', body: JSON.stringify({ username: username, password: password }) })
+    .then(function(data) {
+      _currentUser = data.user;
+      closeAuthModal();
+      showToast('success', '登录成功', '欢迎回来，' + data.user.name, 2000);
+      _updateUserUI();
+    }).catch(function(e) { errorEl.textContent = e.message; });
+  };
+
+  handleRegister = function() {
+    var errorEl = document.getElementById('registerError');
+    var successEl = document.getElementById('registerSuccess');
+    var username = document.getElementById('registerStudentId').value.trim();
+    var password = document.getElementById('registerPassword').value;
+    var name = document.getElementById('registerName').value.trim();
+    var roleEl = document.getElementById('registerRole');
+    var role = roleEl ? roleEl.value : 'student';
+    var gradeEl = document.getElementById('registerGrade');
+    var grade = gradeEl ? gradeEl.value : '';
+    var majorEl = document.getElementById('registerMajor');
+    var major = majorEl ? majorEl.value.trim() : '';
+    var phoneEl = document.getElementById('registerPhone');
+    var phone = phoneEl ? phoneEl.value.trim() : '';
+    var emailEl = document.getElementById('registerEmail');
+    var email = emailEl ? emailEl.value.trim() : '';
+    if (!username || !password || !name) { errorEl.textContent = '请填写必填项'; return; }
+    if (password.length < 6) { errorEl.textContent = '密码至少6位'; return; }
+    _api('/api/register', { method: 'POST', body: JSON.stringify({
+      username: username, password: password, name: name, role: role,
+      grade: grade, major: major, phone: phone, email: email,
+      student_id: username, teacher_title: ''
+    })}).then(function() {
+      successEl.textContent = '注册成功！请登录';
+      errorEl.textContent = '';
+      setTimeout(function() {
+        var tabs = document.querySelectorAll('.auth-tab-btn');
+        tabs.forEach(function(t) { t.classList.toggle('active', t.getAttribute('data-tab') === 'login'); });
+        renderAuthForm('login');
+      }, 1500);
+    }).catch(function(e) { errorEl.textContent = e.message; });
+  };
+
+  btnLogoutNav.onclick = function() {
+    _api('/api/logout', { method: 'POST' }).then(function() {
+      _currentUser = null;
+      _updateUserUI();
+      showToast('info', '已退出登录', '', 1500);
+    }).catch(function() {});
+  };
+
+  function _updateUserUI() {
+    var navAuth = document.getElementById('navAuth');
+    var navUser = document.getElementById('navUser');
+    var certifyGuest = document.getElementById('certifyGuest');
+    var certifyContent = document.getElementById('certifyContent');
+    var rolePanel = document.getElementById('rolePanel');
+    if (_currentUser) {
+      navAuth.style.display = 'none';
+      navUser.style.display = 'flex';
+      document.getElementById('navUserName').textContent = _currentUser.name;
+      document.getElementById('navUserAvatar').textContent = _currentUser.name.charAt(0);
+      certifyGuest.style.display = 'none';
+      certifyContent.style.display = 'block';
+      if (rolePanel) rolePanel.style.display = 'block';
+      document.getElementById('certifyUserName').textContent = _currentUser.name;
+      var roleText = _currentUser.role === 'student' ? '学生' : _currentUser.role === 'teacher' ? '老师' : '管理员';
+      document.getElementById('certifyUserMeta').textContent = roleText + ' · ' + (_currentUser.major || _currentUser.teacher_title || '');
+      document.getElementById('certifyUserAvatar').textContent = _currentUser.name.charAt(0);
+      _renderRolePanel();
+    } else {
+      navAuth.style.display = 'block';
+      navUser.style.display = 'none';
+      certifyGuest.style.display = 'block';
+      certifyContent.style.display = 'none';
+      if (rolePanel) rolePanel.style.display = 'none';
+    }
+  }
+
+  function _renderRolePanel() {
+    var tabsEl = document.getElementById('roleTabs');
+    var contentEl = document.getElementById('roleContent');
+    if (!tabsEl || !contentEl) return;
+    var tabs = [];
+    if (_currentUser.role === 'student') {
+      tabs = [{ id: 'works', label: '📁 我的作品' }, { id: 'upload', label: '📤 上传作品' }];
+    } else if (_currentUser.role === 'teacher') {
+      tabs = [{ id: 'pending', label: '📥 待批改' }, { id: 'reviewed', label: '✅ 已批改' }];
+    } else if (_currentUser.role === 'admin') {
+      tabs = [{ id: 'stats', label: '📊 数据概览' }, { id: 'users', label: '👥 用户管理' }, { id: 'files', label: '📁 文件管理' }];
+    }
+    tabsEl.innerHTML = tabs.map(function(t) {
+      return '<div class="role-tab' + (_currentRoleTab === t.id ? ' active' : '') + '" data-tab="' + t.id + '">' + t.label + '</div>';
+    }).join('');
+    tabsEl.querySelectorAll('.role-tab').forEach(function(tab) {
+      tab.onclick = function() { _currentRoleTab = this.getAttribute('data-tab'); _renderRolePanel(); };
+    });
+    if (!_currentRoleTab && tabs.length > 0) _currentRoleTab = tabs[0].id;
+    if (_currentUser.role === 'student') {
+      if (_currentRoleTab === 'works') _renderStudentWorks(contentEl);
+      else if (_currentRoleTab === 'upload') _renderStudentUpload(contentEl);
+    } else if (_currentUser.role === 'teacher') {
+      if (_currentRoleTab === 'pending') _renderTeacherPending(contentEl);
+      else if (_currentRoleTab === 'reviewed') _renderTeacherReviewed(contentEl);
+    } else if (_currentUser.role === 'admin') {
+      if (_currentRoleTab === 'stats') _renderAdminStats(contentEl);
+      else if (_currentRoleTab === 'users') _renderAdminUsers(contentEl);
+      else if (_currentRoleTab === 'files') _renderAdminFiles(contentEl);
+    }
+  }
+
+  function _renderStudentWorks(el) {
+    _api('/api/my-files').then(function(data) {
+      var files = data.files;
+      var html = '<div class="role-stats">' +
+        '<div class="role-stat"><div class="num">' + files.length + '</div><div class="label">总作品</div></div>' +
+        '<div class="role-stat"><div class="num">' + files.filter(function(f){return f.status==='pending';}).length + '</div><div class="label">待批改</div></div>' +
+        '<div class="role-stat"><div class="num">' + files.filter(function(f){return f.status==='reviewed';}).length + '</div><div class="label">已批改</div></div></div>';
+      if (files.length === 0) {
+        html += '<div class="role-empty"><div class="icon">📭</div><p>还没有上传作品，点击"上传作品"开始</p></div>';
+      } else {
+        html += '<div class="role-table-wrap"><table class="role-table"><thead><tr><th>文件名</th><th>大小</th><th>发送给</th><th>状态</th><th>分数</th><th>评语</th><th>上传时间</th><th>操作</th></tr></thead><tbody>';
+        files.forEach(function(f) {
+          html += '<tr><td>' + _esc(f.original_name) + '</td><td class="file-size-text">' + _formatSize(f.file_size) + '</td><td>' + _esc(f.receiver_name || '未发送') + '</td><td><span class="status-pill ' + f.status + '">' + (f.status === 'pending' ? '待批改' : '已批改') + '</span></td><td>' + (f.score !== null ? '<span class="score-badge">' + f.score + '</span>' : '-') + '</td><td style="max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="' + _esc(f.comment || '') + '">' + _esc(f.comment || '-') + '</td><td>' + _formatDate(f.created_at) + '</td><td><a href="/api/download/' + f.id + '" target="_blank" class="role-btn role-btn-secondary" style="text-decoration:none;">下载</a></td></tr>';
+        });
+        html += '</tbody></table></div>';
+      }
+      el.innerHTML = html;
+    }).catch(function(e) { el.innerHTML = '<div class="role-empty"><p>加载失败：' + e.message + '</p></div>'; });
+  }
+
+  function _renderStudentUpload(el) {
+    el.innerHTML = '<div class="upload-area-inline" id="uploadAreaInline"><div class="icon">📁</div><p><strong>点击选择文件</strong> 或拖拽文件到此处</p><p style="font-size:12px;margin-top:4px;">支持任意格式，单个文件最大2GB</p><div class="file-name" id="uploadFileNameInline"></div></div><input type="file" id="fileInputInline" style="display:none;"><div id="sendToTeacherInline" style="display:none;"><div class="form-group-inline"><label>选择老师</label><select id="teacherSelectInline"><option value="">请选择老师</option></select></div><div class="form-group-inline"><label>作品说明（可选）</label><textarea id="fileDescInline" rows="3" placeholder="简要说明作品内容、竞赛名称等"></textarea></div><button class="role-btn role-btn-primary" id="btnSendInline" style="padding:10px 24px;font-size:14px;">📤 发送给老师批改</button></div>';
+    var _selectedFileId = null;
+    var area = document.getElementById('uploadAreaInline');
+    var input = document.getElementById('fileInputInline');
+    area.onclick = function() { input.click(); };
+    area.addEventListener('dragover', function(e) { e.preventDefault(); area.classList.add('dragover'); });
+    area.addEventListener('dragleave', function() { area.classList.remove('dragover'); });
+    area.addEventListener('drop', function(e) { e.preventDefault(); area.classList.remove('dragover'); _doUploadInline(e.dataTransfer.files[0]); });
+    input.onchange = function() { if (this.files[0]) _doUploadInline(this.files[0]); };
+    _api('/api/teachers').then(function(data) {
+      var sel = document.getElementById('teacherSelectInline');
+      data.teachers.forEach(function(t) {
+        var opt = document.createElement('option');
+        opt.value = t.id;
+        opt.textContent = t.name + '（' + (t.teacher_title || t.major || '老师') + '）';
+        sel.appendChild(opt);
+      });
+    }).catch(function() {});
+    function _doUploadInline(file) {
+      if (!file) return;
+      document.getElementById('uploadFileNameInline').textContent = '已选择：' + file.name + '（' + _formatSize(file.size) + '）';
+      var formData = new FormData();
+      formData.append('file', file);
+      var xhr = new XMLHttpRequest();
+      xhr.open('POST', '/api/upload');
+      xhr.withCredentials = true;
+      xhr.onload = function() {
+        try {
+          var res = JSON.parse(xhr.responseText);
+          if (res.success) {
+            _selectedFileId = res.fileId;
+            document.getElementById('sendToTeacherInline').style.display = 'block';
+            showToast('success', '上传成功', '请选择老师发送', 2000);
+          } else { showToast('error', '上传失败', res.error || '', 2000); }
+        } catch (e) { showToast('error', '上传失败', e.message, 2000); }
+      };
+      xhr.onerror = function() { showToast('error', '上传失败', '网络错误', 2000); };
+      xhr.send(formData);
+    }
+    document.getElementById('btnSendInline').onclick = function() {
+      var teacherId = document.getElementById('teacherSelectInline').value;
+      var desc = document.getElementById('fileDescInline').value;
+      if (!teacherId) { showToast('error', '请选择老师', '', 1500); return; }
+      if (!_selectedFileId) { showToast('error', '请先上传文件', '', 1500); return; }
+      _api('/api/send-file', { method: 'POST', body: JSON.stringify({ file_id: _selectedFileId, receiver_id: parseInt(teacherId), description: desc }) })
+      .then(function() {
+        showToast('success', '发送成功', '作品已发送给老师，等待批改', 2000);
+        _currentRoleTab = 'works';
+        _renderRolePanel();
+      }).catch(function(e) { showToast('error', '发送失败', e.message, 2000); });
+    };
+  }
+
+  function _renderTeacherPending(el) {
+    _api('/api/received-files').then(function(data) {
+      var files = data.files.filter(function(f) { return f.status === 'pending'; });
+      var html = '<div class="role-stats"><div class="role-stat"><div class="num">' + files.length + '</div><div class="label">待批改</div></div></div>';
+      if (files.length === 0) {
+        html += '<div class="role-empty"><div class="icon">🎉</div><p>没有待批改的作品</p></div>';
+      } else {
+        html += '<div class="role-table-wrap"><table class="role-table"><thead><tr><th>文件名</th><th>大小</th><th>学生</th><th>年级/专业</th><th>说明</th><th>提交时间</th><th>操作</th></tr></thead><tbody>';
+        files.forEach(function(f) {
+          html += '<tr><td>' + _esc(f.original_name) + '</td><td class="file-size-text">' + _formatSize(f.file_size) + '</td><td>' + _esc(f.sender_name) + '</td><td>' + _esc((f.grade || '') + ' ' + (f.major || '')) + '</td><td style="max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="' + _esc(f.description || '') + '">' + _esc(f.description || '-') + '</td><td>' + _formatDate(f.created_at) + '</td><td><a href="/api/download/' + f.id + '" target="_blank" class="role-btn role-btn-secondary" style="text-decoration:none;">下载</a> <button class="role-btn role-btn-success" onclick="_openReviewModal(' + f.id + ', \'' + _esc(f.original_name).replace(/'/g, "\\'") + '\')">批改</button></td></tr>';
+        });
+        html += '</tbody></table></div>';
+      }
+      el.innerHTML = html;
+    }).catch(function(e) { el.innerHTML = '<div class="role-empty"><p>加载失败：' + e.message + '</p></div>'; });
+  }
+
+  function _renderTeacherReviewed(el) {
+    _api('/api/received-files').then(function(data) {
+      var files = data.files.filter(function(f) { return f.status === 'reviewed'; });
+      var avg = files.length > 0 ? (files.reduce(function(s,f){return s+(f.score||0);},0)/files.length).toFixed(1) : '-';
+      var html = '<div class="role-stats"><div class="role-stat"><div class="num">' + files.length + '</div><div class="label">已批改</div></div><div class="role-stat"><div class="num">' + avg + '</div><div class="label">平均分</div></div></div>';
+      if (files.length === 0) {
+        html += '<div class="role-empty"><div class="icon">📋</div><p>还没有批改记录</p></div>';
+      } else {
+        html += '<div class="role-table-wrap"><table class="role-table"><thead><tr><th>文件名</th><th>学生</th><th>分数</th><th>评语</th><th>批改时间</th><th>操作</th></tr></thead><tbody>';
+        files.forEach(function(f) {
+          html += '<tr><td>' + _esc(f.original_name) + '</td><td>' + _esc(f.sender_name) + '</td><td><span class="score-badge">' + f.score + '</span></td><td style="max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="' + _esc(f.comment || '') + '">' + _esc(f.comment || '-') + '</td><td>' + _formatDate(f.reviewed_at) + '</td><td><a href="/api/download/' + f.id + '" target="_blank" class="role-btn role-btn-secondary" style="text-decoration:none;">下载</a></td></tr>';
+        });
+        html += '</tbody></table></div>';
+      }
+      el.innerHTML = html;
+    }).catch(function(e) { el.innerHTML = '<div class="role-empty"><p>加载失败：' + e.message + '</p></div>'; });
+  }
+
+  window._openReviewModal = function(fileId, fileName) {
+    var overlay = document.createElement('div');
+    overlay.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px;';
+    overlay.innerHTML = '<div style="background:white;border-radius:12px;padding:24px;width:100%;max-width:480px;"><h3 style="margin-bottom:16px;color:#1e293b;">✏️ 批改作品</h3><p style="margin-bottom:16px;color:#64748b;font-size:14px;">文件：<strong>' + _esc(fileName) + '</strong></p><div style="margin-bottom:12px;"><label style="display:block;margin-bottom:4px;font-size:13px;font-weight:500;">分数（0-100）</label><input type="number" id="reviewScoreInput" min="0" max="100" style="width:100%;padding:8px 10px;border:1px solid #cbd5e1;border-radius:6px;font-size:14px;"></div><div style="margin-bottom:16px;"><label style="display:block;margin-bottom:4px;font-size:13px;font-weight:500;">评语</label><textarea id="reviewCommentInput" rows="4" style="width:100%;padding:8px 10px;border:1px solid #cbd5e1;border-radius:6px;font-size:14px;"></textarea></div><div style="display:flex;gap:12px;justify-content:flex-end;"><button id="reviewCancelBtn" style="padding:8px 16px;border:none;border-radius:6px;background:#f1f5f9;cursor:pointer;">取消</button><button id="reviewSubmitBtn" style="padding:8px 16px;border:none;border-radius:6px;background:#2563eb;color:white;cursor:pointer;">提交批改</button></div></div>';
+    document.body.appendChild(overlay);
+    overlay.querySelector('#reviewCancelBtn').onclick = function() { overlay.remove(); };
+    overlay.onclick = function(e) { if (e.target === overlay) overlay.remove(); };
+    overlay.querySelector('#reviewSubmitBtn').onclick = function() {
+      var score = parseInt(overlay.querySelector('#reviewScoreInput').value);
+      var comment = overlay.querySelector('#reviewCommentInput').value;
+      if (isNaN(score) || score < 0 || score > 100) { showToast('error', '请输入0-100的分数', '', 1500); return; }
+      _api('/api/review', { method: 'POST', body: JSON.stringify({ file_id: fileId, score: score, comment: comment }) })
+      .then(function() { showToast('success', '批改完成', '', 2000); overlay.remove(); _renderRolePanel(); })
+      .catch(function(e) { showToast('error', '批改失败', e.message, 2000); });
+    };
+  };
+
+  function _renderAdminStats(el) {
+    _api('/api/admin/stats').then(function(data) {
+      var s = data.stats;
+      el.innerHTML = '<div class="role-stats">' +
+        '<div class="role-stat"><div class="num">' + s.totalUsers + '</div><div class="label">总用户</div></div>' +
+        '<div class="role-stat"><div class="num">' + s.students + '</div><div class="label">学生</div></div>' +
+        '<div class="role-stat"><div class="num">' + s.teachers + '</div><div class="label">老师</div></div>' +
+        '<div class="role-stat"><div class="num">' + s.totalFiles + '</div><div class="label">文件总数</div></div>' +
+        '<div class="role-stat"><div class="num">' + s.pendingFiles + '</div><div class="label">待批改</div></div>' +
+        '<div class="role-stat"><div class="num">' + s.reviewedFiles + '</div><div class="label">已批改</div></div>' +
+        '<div class="role-stat" style="grid-column:span 2;"><div class="num">' + _formatSize(s.totalSize) + '</div><div class="label">文件总大小</div></div></div>' +
+        '<div style="display:flex;gap:12px;flex-wrap:wrap;"><a href="/api/admin/export-users" target="_blank" class="role-btn role-btn-success" style="text-decoration:none;padding:10px 20px;">📊 导出用户列表</a><a href="/api/admin/export-files" target="_blank" class="role-btn role-btn-warning" style="text-decoration:none;padding:10px 20px;">📊 导出文件记录</a></div>';
+    }).catch(function(e) { el.innerHTML = '<div class="role-empty"><p>加载失败：' + e.message + '</p></div>'; });
+  }
+
+  function _renderAdminUsers(el) {
+    _api('/api/admin/users').then(function(data) {
+      var users = data.users;
+      var html = '<div style="margin-bottom:12px;"><a href="/api/admin/export-users" target="_blank" class="role-btn role-btn-success" style="text-decoration:none;">📊 导出Excel</a></div>';
+      html += '<div class="role-table-wrap"><table class="role-table"><thead><tr><th>ID</th><th>用户名</th><th>角色</th><th>姓名</th><th>年级/专业</th><th>联系方式</th><th>状态</th><th>注册时间</th><th>操作</th></tr></thead><tbody>';
+      users.forEach(function(u) {
+        html += '<tr><td>' + u.id + '</td><td>' + _esc(u.username) + '</td><td><span class="role-pill ' + u.role + '">' + (u.role === 'student' ? '学生' : u.role === 'teacher' ? '老师' : '管理员') + '</span></td><td>' + _esc(u.name) + '</td><td>' + _esc((u.grade || '') + ' ' + (u.major || '')) + '</td><td>' + _esc(u.phone || u.email || '-') + '</td><td><span class="status-pill ' + u.status + '">' + (u.status === 'active' ? '正常' : '禁用') + '</span></td><td>' + _formatDate(u.created_at) + '</td><td>' + (u.role !== 'admin' ? '<button class="role-btn ' + (u.status === 'active' ? 'role-btn-danger' : 'role-btn-success') + '" onclick="_toggleUser(' + u.id + ', \'' + (u.status === 'active' ? 'disabled' : 'active') + '\')">' + (u.status === 'active' ? '禁用' : '启用') + '</button>' : '-') + '</td></tr>';
+      });
+      html += '</tbody></table></div>';
+      el.innerHTML = html;
+    }).catch(function(e) { el.innerHTML = '<div class="role-empty"><p>加载失败：' + e.message + '</p></div>'; });
+  }
+
+  window._toggleUser = function(userId, status) {
+    if (!confirm('确定要' + (status === 'active' ? '启用' : '禁用') + '该用户吗？')) return;
+    _api('/api/admin/toggle-user', { method: 'POST', body: JSON.stringify({ user_id: userId, status: status }) })
+    .then(function() { showToast('success', '操作成功', '', 1500); _renderRolePanel(); })
+    .catch(function(e) { showToast('error', '操作失败', e.message, 2000); });
+  };
+
+  function _renderAdminFiles(el) {
+    _api('/api/admin/files').then(function(data) {
+      var files = data.files;
+      var html = '<div style="margin-bottom:12px;"><a href="/api/admin/export-files" target="_blank" class="role-btn role-btn-warning" style="text-decoration:none;">📊 导出Excel</a></div>';
+      html += '<div class="role-table-wrap"><table class="role-table"><thead><tr><th>ID</th><th>文件名</th><th>大小</th><th>发送者</th><th>接收者</th><th>状态</th><th>分数</th><th>上传时间</th><th>操作</th></tr></thead><tbody>';
+      files.forEach(function(f) {
+        html += '<tr><td>' + f.id + '</td><td>' + _esc(f.original_name) + '</td><td class="file-size-text">' + _formatSize(f.file_size) + '</td><td>' + _esc(f.sender_name || '-') + '</td><td>' + _esc(f.receiver_name || '-') + '</td><td><span class="status-pill ' + f.status + '">' + (f.status === 'pending' ? '待批改' : '已批改') + '</span></td><td>' + (f.score !== null ? '<span class="score-badge">' + f.score + '</span>' : '-') + '</td><td>' + _formatDate(f.created_at) + '</td><td><a href="/api/download/' + f.id + '" target="_blank" class="role-btn role-btn-secondary" style="text-decoration:none;">下载</a></td></tr>';
+      });
+      html += '</tbody></table></div>';
+      el.innerHTML = html;
+    }).catch(function(e) { el.innerHTML = '<div class="role-empty"><p>加载失败：' + e.message + '</p></div>'; });
+  }
+
+  _api('/api/me').then(function(data) {
+    _currentUser = data.user;
+    _updateUserUI();
+  }).catch(function() {
+    _currentUser = null;
+    _updateUserUI();
+  });
 
   /* ---- 初始化 ---- */
   onScroll();
